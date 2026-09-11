@@ -1,0 +1,32 @@
+@use 'variables';
+@use 'glass';
+@use 'flip-card';
+@use 'controls';
+
+// Global resets & helper utilities
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(236, 72, 153, 0.4);
+  color: #ffffff;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f051d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b0764;
+  border-radius: 4px;
+
+  &:hover {
+    background: #ec4899;
+  }
+}

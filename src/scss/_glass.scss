@@ -1,0 +1,227 @@
+@use 'variables' as *;
+
+// Glassmorphism & Visual Aesthetics
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: $color-bg-dark;
+  background-image: url('/images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: $color-text-main;
+  font-family: $font-family-display;
+  overflow-x: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(30, 11, 54, 0.4) 0%, rgba(15, 5, 29, 0.85) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+#particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.app-container {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+}
+
+// Glass Header Component
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: rgba(236, 72, 153, 0.15);
+    border: 1px solid rgba(236, 72, 153, 0.4);
+    backdrop-filter: blur(8px);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: $color-pink-bright;
+    box-shadow: 0 0 15px rgba(236, 72, 153, 0.2);
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background-color: $color-orange-coral;
+      border-radius: 50%;
+      box-shadow: 0 0 10px $color-orange-coral;
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+  }
+
+  .main-title {
+    font-size: 4.2rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff 20%, #f472b6 60%, #ff7a00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6));
+
+    @media (max-width: 600px) {
+      font-size: 2.6rem;
+    }
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: $color-text-muted;
+    max-width: 500px;
+    margin: 0;
+    font-weight: 400;
+  }
+}
+
+// Current Target Banner
+.target-banner {
+  margin-top: 0.75rem;
+  padding: 0.85rem 2.2rem;
+  background: rgba(26, 12, 45, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(236, 72, 153, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+
+  #target-status {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .target-event-name {
+    color: $color-gold-accent;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 14px rgba(255, 184, 0, 0.4);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.7rem 1.4rem;
+    gap: 0.5rem;
+
+    #target-status {
+      font-size: 0.9rem;
+    }
+
+    .target-event-name {
+      font-size: 1.15rem;
+    }
+  }
+}
+
+// Completion Banner
+.completion-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem 2rem;
+  background: rgba(30, 11, 54, 0.85);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(236, 72, 153, 0.5);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(236, 72, 153, 0.3);
+  margin: 2rem auto;
+  max-width: 600px;
+  animation: bannerPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+
+  .completion-badge {
+    padding: 0.4rem 1.2rem;
+    background: linear-gradient(90deg, rgba(236, 72, 153, 0.3), rgba(249, 115, 22, 0.3));
+    border: 1px solid rgba(249, 115, 22, 0.5);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: $color-gold-accent;
+    margin-bottom: 1rem;
+  }
+
+  .completion-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 0.75rem 0;
+    background: linear-gradient(135deg, #ffffff 0%, #f472b6 50%, #ff7a00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+
+    @media (max-width: 600px) {
+      font-size: 1.8rem;
+    }
+  }
+
+  .completion-subtitle {
+    font-size: 1.1rem;
+    color: $color-text-muted;
+    margin: 0;
+  }
+}
+
+@keyframes bannerPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}

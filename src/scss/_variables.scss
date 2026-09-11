@@ -1,0 +1,41 @@
+// SCSS Variables - Modern Color Palette & Typography
+
+// Palette: Purples, Pinks, Oranges
+$color-bg-dark: #0f051d;
+$color-purple-deep: #1e0b36;
+$color-purple-mid: #3b0764;
+$color-purple-light: #7e22ce;
+
+$color-pink-hot: #ec4899;
+$color-pink-bright: #f472b6;
+$color-magenta: #d946ef;
+
+$color-orange-sunset: #f97316;
+$color-orange-bright: #ff7a00;
+$color-orange-coral: #ff5722;
+
+$color-gold-accent: #fbbf24;
+
+// Glassmorphism & UI Colors
+$glass-bg: rgba(26, 12, 45, 0.45);
+$glass-bg-hover: rgba(45, 20, 75, 0.6);
+$glass-border: rgba(255, 255, 255, 0.15);
+$glass-border-glow: rgba(236, 72, 153, 0.4);
+
+$color-text-main: #ffffff;
+$color-text-muted: rgba(255, 255, 255, 0.7);
+$color-text-dim: rgba(255, 255, 255, 0.45);
+
+// Flip Card Specific Colors
+$card-bg-top: #1b0a33;
+$card-bg-bottom: #140728;
+$card-divider: rgba(0, 0, 0, 0.6);
+$card-text-gradient: linear-gradient(135deg, #ffffff 0%, #f472b6 50%, #f97316 100%);
+
+// Fonts
+$font-family-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-family-digits: 'Space Grotesk', 'JetBrains Mono', monospace;
+
+// Transitions & Shadows
+$shadow-glow: 0 0 25px rgba(236, 72, 153, 0.3), 0 0 50px rgba(249, 115, 22, 0.15);
+$shadow-card: 0 15px 35px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(126, 34, 206, 0.2);

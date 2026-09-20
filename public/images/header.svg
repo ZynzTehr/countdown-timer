@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 260" width="800" height="260">
+  <defs>
+    <!-- Gradient sky: deep purple → coral sunset → golden horizon -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f051d"/>
+      <stop offset="35%" stop-color="#3b0764"/>
+      <stop offset="65%" stop-color="#ec4899"/>
+      <stop offset="85%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <!-- Sun glow -->
+    <radialGradient id="sunGlow" cx="0.62" cy="0.72" r="0.35">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#f97316" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Water gradient -->
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b0764" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0f051d" stop-opacity="0.95"/>
+    </linearGradient>
+    <!-- Moon glow -->
+    <radialGradient id="moonGlow" cx="0.22" cy="0.18" r="0.12">
+      <stop offset="0%" stop-color="#d8d0ff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#7e22ce" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Star twinkle animation -->
+    <style>
+      @keyframes twinkle { 0%,100%{opacity:.3} 50%{opacity:1} }
+      @keyframes drift { 0%{transform:translateX(0)} 100%{transform:translateX(6px)} }
+      @keyframes ripple { 0%,100%{opacity:.18;transform:scaleX(1)} 50%{opacity:.35;transform:scaleX(1.15)} }
+      @keyframes sunPulse { 0%,100%{r:18;opacity:.9} 50%{r:20;opacity:1} }
+      @keyframes drawFlower { 0%{stroke-dashoffset:600} 100%{stroke-dashoffset:0} }
+      @keyframes fadeInPetal { 0%{opacity:0;transform:scale(0.4)} 100%{opacity:1;transform:scale(1)} }
+      @keyframes bloomCenter { 0%{r:0;opacity:0} 100%{r:5;opacity:1} }
+      .star { animation: twinkle 3s ease-in-out infinite; }
+      .star:nth-child(2n) { animation-delay: 0.7s; animation-duration: 2.4s; }
+      .star:nth-child(3n) { animation-delay: 1.4s; animation-duration: 3.6s; }
+      .cloud { animation: drift 12s ease-in-out infinite alternate; }
+      .cloud2 { animation: drift 16s ease-in-out infinite alternate-reverse; }
+      .ripple-line { animation: ripple 4s ease-in-out infinite; }
+      .ripple-line:nth-child(2n) { animation-delay: 1.2s; }
+      .ripple-line:nth-child(3n) { animation-delay: 2.5s; }
+      .sun-disc { animation: sunPulse 6s ease-in-out infinite; }
+      .flower-stem {
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+        animation: drawFlower 4s ease-out 0.5s forwards;
+      }
+      .petal {
+        transform-origin: center;
+        opacity: 0;
+      }
+      .p1 { animation: fadeInPetal 0.8s ease-out 3.0s forwards; }
+      .p2 { animation: fadeInPetal 0.8s ease-out 3.2s forwards; }
+      .p3 { animation: fadeInPetal 0.8s ease-out 3.4s forwards; }
+      .p4 { animation: fadeInPetal 0.8s ease-out 3.6s forwards; }
+      .p5 { animation: fadeInPetal 0.8s ease-out 3.8s forwards; }
+      .p6 { animation: fadeInPetal 0.8s ease-out 4.0s forwards; }
+      .flower-center { animation: bloomCenter 0.6s ease-out 4.3s forwards; }
+      .title-text { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Sky background -->
+  <rect width="800" height="260" fill="url(#sky)"/>
+
+  <!-- Sun glow halo -->
+  <rect width="800" height="260" fill="url(#sunGlow)"/>
+
+  <!-- Moon glow -->
+  <rect width="800" height="260" fill="url(#moonGlow)"/>
+
+  <!-- Stars -->
+  <circle class="star" cx="90" cy="25" r="1.2" fill="#fff"/>
+  <circle class="star" cx="180" cy="42" r="0.8" fill="#f0e0ff"/>
+  <circle class="star" cx="55" cy="55" r="1.0" fill="#fff"/>
+  <circle class="star" cx="260" cy="18" r="0.9" fill="#f0e0ff"/>
+  <circle class="star" cx="340" cy="35" r="1.1" fill="#fff"/>
+  <circle class="star" cx="145" cy="15" r="0.7" fill="#d8d0ff"/>
+  <circle class="star" cx="720" cy="30" r="1.0" fill="#fff"/>
+  <circle class="star" cx="650" cy="50" r="0.8" fill="#f0e0ff"/>
+  <circle class="star" cx="580" cy="22" r="1.2" fill="#d8d0ff"/>
+
+  <!-- Wispy clouds -->
+  <ellipse class="cloud" cx="150" cy="65" rx="55" ry="8" fill="rgba(255,255,255,0.06)"/>
+  <ellipse class="cloud2" cx="520" cy="50" rx="70" ry="10" fill="rgba(255,255,255,0.05)"/>
+  <ellipse class="cloud" cx="680" cy="72" rx="45" ry="7" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- Sun disc -->
+  <circle class="sun-disc" cx="496" cy="145" r="18" fill="#fbbf24" opacity="0.9"/>
+  <circle cx="496" cy="145" r="30" fill="none" stroke="#f97316" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Crescent moon -->
+  <circle cx="175" cy="38" r="10" fill="#e0d8f0" opacity="0.75"/>
+  <circle cx="179" cy="35" r="9" fill="#0f051d" opacity="0.85"/>
+
+  <!-- Mountain range silhouette -->
+  <path d="M0,180 L60,145 L120,158 L180,120 L220,135 L300,95 L370,82 L420,105 L480,130 L530,142 L560,128 L610,115 L660,138 L710,125 L760,150 L800,140 L800,200 L0,200 Z" fill="#1e0b36" opacity="0.9"/>
+  <!-- Foreground mountain ridge -->
+  <path d="M0,192 L50,175 L100,182 L160,160 L210,168 L280,140 L350,128 L400,145 L460,162 L510,170 L550,158 L600,148 L660,165 L720,155 L770,175 L800,168 L800,200 L0,200 Z" fill="#0f051d"/>
+
+  <!-- Pine tree silhouettes on the ridge -->
+  <polygon points="68,175 74,150 80,175" fill="#0f051d"/>
+  <polygon points="85,178 92,148 99,178" fill="#0f051d"/>
+  <polygon points="700,160 707,132 714,160" fill="#0f051d"/>
+  <polygon points="720,158 726,135 732,158" fill="#0f051d"/>
+  <polygon points="50,178 55,158 60,178" fill="#0f051d"/>
+  <polygon points="740,162 745,142 750,162" fill="#0f051d"/>
+
+  <!-- Water / River -->
+  <rect y="195" width="800" height="65" fill="url(#water)"/>
+
+  <!-- Water ripple streaks -->
+  <line class="ripple-line" x1="120" y1="210" x2="260" y2="210" stroke="#7e22ce" stroke-width="0.8" opacity="0.18"/>
+  <line class="ripple-line" x1="350" y1="218" x2="520" y2="218" stroke="#ec4899" stroke-width="0.7" opacity="0.15"/>
+  <line class="ripple-line" x1="480" y1="228" x2="680" y2="228" stroke="#f97316" stroke-width="0.6" opacity="0.12"/>
+  <line class="ripple-line" x1="80" y1="225" x2="200" y2="225" stroke="#7e22ce" stroke-width="0.5" opacity="0.10"/>
+  <line class="ripple-line" x1="550" y1="205" x2="700" y2="205" stroke="#fbbf24" stroke-width="0.6" opacity="0.14"/>
+  <line class="ripple-line" x1="200" y1="235" x2="380" y2="235" stroke="#d946ef" stroke-width="0.5" opacity="0.10"/>
+
+  <!-- Animated flower (right side) — draws itself in with soothing path animation -->
+  <g transform="translate(738, 140)">
+    <!-- Stem with leaves -->
+    <path class="flower-stem" d="M0,58 Q-2,45 2,35 Q4,28 0,20 Q-3,12 0,5 Q2,-2 0,-8" 
+          fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round"/>
+    <!-- Leaf 1 -->
+    <path class="flower-stem" d="M1,40 Q12,32 8,42" 
+          fill="none" stroke="#4ade80" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- Leaf 2 -->
+    <path class="flower-stem" d="M0,28 Q-12,20 -7,30" 
+          fill="none" stroke="#4ade80" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- Petals bloom after stem draws -->
+    <ellipse class="petal p1" cx="0" cy="-16" rx="4" ry="8" fill="#ec4899" opacity="0.85" transform="rotate(0,0,-8)"/>
+    <ellipse class="petal p2" cx="7" cy="-12" rx="4" ry="8" fill="#f472b6" opacity="0.80" transform="rotate(60,0,-8)"/>
+    <ellipse class="petal p3" cx="7" cy="-4" rx="4" ry="8" fill="#d946ef" opacity="0.75" transform="rotate(120,0,-8)"/>
+    <ellipse class="petal p4" cx="0" cy="0" rx="4" ry="8" fill="#f97316" opacity="0.80" transform="rotate(180,0,-8)"/>
+    <ellipse class="petal p5" cx="-7" cy="-4" rx="4" ry="8" fill="#fbbf24" opacity="0.85" transform="rotate(240,0,-8)"/>
+    <ellipse class="petal p6" cx="-7" cy="-12" rx="4" ry="8" fill="#7e22ce" opacity="0.80" transform="rotate(300,0,-8)"/>
+    <!-- Flower center -->
+    <circle class="flower-center" cx="0" cy="-8" r="0" fill="#fbbf24"/>
+  </g>
+
+  <!-- Title text -->
+  <text class="title-text" x="400" y="110" text-anchor="middle" font-size="32" font-weight="700" fill="#fff" letter-spacing="1">
+    Dusk &amp; Dawn
+  </text>
+  <text class="title-text" x="400" y="138" text-anchor="middle" font-size="14" font-weight="400" fill="#f472b6" letter-spacing="3" opacity="0.9">
+    COUNTDOWN TIMER
+  </text>
+</svg>

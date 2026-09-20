@@ -45,8 +45,8 @@ class NatureAmbienceEngine {
     // 2. Rain ambient generator
     this.setupRain();
 
-    // 3. Night crickets generator
-    this.setupCrickets();
+    // 3. Night crickets — DISABLED
+    // this.setupCrickets();
 
     // 4. Schedule periodic bird chirps
     this.scheduleNextBird();
@@ -241,11 +241,11 @@ class NatureAmbienceEngine {
       this.rainGain.gain.linearRampToValueAtTime(targetRain, now + 2);
     }
 
-    // Cricket gain (night only)
-    if (this.cricketGain) {
-      const targetCrickets = (this.phase === 'night' && this.weather !== 'rain') ? 0.07 : 0;
-      this.cricketGain.gain.linearRampToValueAtTime(targetCrickets, now + 2);
-    }
+    // Cricket gain — DISABLED
+    // if (this.cricketGain) {
+    //   const targetCrickets = (this.phase === 'night' && this.weather !== 'rain') ? 0.07 : 0;
+    //   this.cricketGain.gain.linearRampToValueAtTime(targetCrickets, now + 2);
+    // }
   }
 
   /**

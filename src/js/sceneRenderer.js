@@ -470,23 +470,13 @@ export class SceneRenderer {
       this.drawStars(blends.starAlpha);
     }
 
-    // 3. Dynamic Celestial Sun Disc (Occluded behind mountain ridge)
-    // Physically emerges from deep behind the eastern mountain slope at dawn,
-    // arcs high over the summit at noon, and sets deep behind the western ridge in its entirety before nightfall.
+    // 3. Dynamic Celestial Sun Disc (Sky-clipped so it hides behind painted mountain)
     this.drawSunDisc(cycle, blends);
 
-    // 4. Dynamic Astronomical Moon Disc (Occluded behind mountain ridge)
-    // Emerges from behind the mountain in the east at nightfall (NOT where the sun just went down!),
-    // arcs high across the vast starry sky, and disappears off the top-left corner of the screen by dawn.
+    // 4. Dynamic Astronomical Moon Disc (Sky-clipped so it hides behind painted mountain)
     this.drawMoonDisc(lunarState, blends.nightAlpha, cycle.hour);
 
-    // 5. MOUNTAIN FOREGROUND OCCLUSION PASS
-    // Redraws the landscape (mountains, trees, rocks, river) clipped strictly to the mountain ridge!
-    // This physically places the mountain peaks and pines IN FRONT of the Sun and Moon discs.
-    // When the sun rises or sets, it physically emerges from / dips behind the mountain silhouette!
-    this.drawMountainForeground(blends);
-
-    // 6. Atmospheric Celestial Illumination (Screen-blended light scattering over sky and ridges)
+    // 5. Atmospheric Celestial Illumination (Screen-blended light scattering over sky and ridges)
     this.drawSunAtmosphere(cycle, blends);
     this.drawMoonAtmosphere(lunarState, blends.nightAlpha, cycle.hour);
 
@@ -564,34 +554,9 @@ export class SceneRenderer {
    * Clips to the mountain ridge contour and redraws the artwork layer.
    * Occludes any sun or moon pixels that dip behind the mountain peaks!
    */
-  drawMountainForeground(blends) {
-    const w = this.width;
-    const h = this.height;
-
-    this.ctx.save();
-
-    // Construct mountain ridge clipping polygon
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, h);
-    this.ctx.lineTo(0, this.getMountainRidgeY(0) * h - this.parallax.y * 3);
-
-    const steps = 64;
-    for (let i = 1; i <= steps; i++) {
-      const nx = i / steps;
-      const px = nx * w - this.parallax.x * 6;
-      const py = this.getMountainRidgeY(nx) * h - this.parallax.y * 3;
-      this.ctx.lineTo(px, py);
-    }
-
-    this.ctx.lineTo(w, h);
-    this.ctx.closePath();
-    this.ctx.clip();
-
-    // Redraw artwork inside the clipped region
-    this.drawArtworkCover(blends);
-
-    this.ctx.restore();
-  }
+  // drawMountainForeground removed — was creating a visible double mountain outline
+  // by redrawing artwork clipped to a mathematical ridge that didn't perfectly match
+  // the painted artwork. Sun/moon now clip themselves to the sky region instead.
 
   /**
    * Calculates diurnal celestial sun trajectory coordinates.
@@ -654,6 +619,7 @@ export class SceneRenderer {
     }
 
     this.ctx.save();
+    this.clipToSkyRegion(); // Clip disc to sky so it hides behind painted mountain
     this.ctx.globalAlpha = fadeAlpha;
 
     // Luminous Celestial Sun Disc (Feathered incandescent sphere)
@@ -833,7 +799,7 @@ export class SceneRenderer {
 
   /**
    * Moon Disc Pass: Physical spherical moon with accurate astronomical phase shading.
-   * Drawn BEFORE drawMountainForeground so the mountain ridge physically occludes it!
+   * Sky-clipped so it naturally hides behind the painted mountain artwork.
    */
   drawMoonDisc(lunarState, nightAlpha, hour) {
     const isNightTime = hour >= 19.5 || hour <= 6.2 || nightAlpha > 0.02;
@@ -845,7 +811,10 @@ export class SceneRenderer {
 
     if (effectiveAlpha <= 0.01) return;
 
+    this.ctx.save();
+    this.clipToSkyRegion(); // Clip disc to sky so it hides behind painted mountain
     drawDynamicMoonDisc(this.ctx, moonX, moonY, radius, lunarState, effectiveAlpha);
+    this.ctx.restore();
   }
 
   /**

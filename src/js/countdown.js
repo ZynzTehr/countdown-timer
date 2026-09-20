@@ -13,11 +13,25 @@ export function calculateTimeRemaining(targetDate, currentDate = new Date()) {
   }
 
   const totalMs = target.getTime() - now.getTime();
-  const isPast = totalMs < 0;
-  const isComplete = Math.abs(totalMs) < 1000;
+  const isPast = totalMs <= 0;
 
-  const start = isPast ? target : now;
-  const end = isPast ? now : target;
+  if (isPast) {
+    // Persistent completed state: Clamps cleanly at absolute zero
+    return {
+      years: 0,
+      months: 0,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      isPast: true,
+      isComplete: true,
+      totalMs: 0
+    };
+  }
+
+  const start = now;
+  const end = target;
 
   let years = end.getFullYear() - start.getFullYear();
   let months = end.getMonth() - start.getMonth();
@@ -48,7 +62,6 @@ export function calculateTimeRemaining(targetDate, currentDate = new Date()) {
     years--;
   }
 
-  // If target reached or past 0
   const isZero = (years === 0 && months === 0 && days === 0 && hours === 0 && minutes === 0 && seconds === 0);
 
   return {
@@ -58,8 +71,34 @@ export function calculateTimeRemaining(targetDate, currentDate = new Date()) {
     hours: Math.max(0, isNaN(hours) ? 0 : hours),
     minutes: Math.max(0, isNaN(minutes) ? 0 : minutes),
     seconds: Math.max(0, isNaN(seconds) ? 0 : seconds),
-    isPast: !!isPast,
-    isComplete: isComplete || (isZero && !isPast),
-    totalMs: isNaN(totalMs) ? 0 : Math.abs(totalMs)
+    isPast: false,
+    isComplete: isZero,
+    totalMs: Math.max(0, totalMs)
+  };
+}
+
+/**
+ * Stopwatch Engine - Converts elapsed milliseconds into formatted units for flip cards.
+ */
+export function calculateStopwatchTime(elapsedMs) {
+  const safeMs = Math.max(0, Math.floor(elapsedMs));
+  const totalSeconds = Math.floor(safeMs / 1000);
+  const seconds = totalSeconds % 60;
+  const totalMinutes = Math.floor(totalSeconds / 60);
+  const minutes = totalMinutes % 60;
+  const totalHours = Math.floor(totalMinutes / 60);
+  const hours = totalHours % 24;
+  const days = Math.floor(totalHours / 24);
+
+  return {
+    years: 0,
+    months: 0,
+    days: days,
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds,
+    isPast: false,
+    isComplete: false,
+    totalMs: safeMs
   };
 }

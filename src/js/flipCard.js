@@ -63,19 +63,15 @@ export class FlipClockManager {
 
       // Handle visibility for leading zero units
       if (unit !== 'seconds') {
-        if (hideLeadingUnits && isLeadingZero && val === 0) {
+        if (!this.showLeadingZeros && isLeadingZero && val === 0) {
           unitCardElem.classList.add('unit-hidden');
         } else {
           if (val > 0) isLeadingZero = false;
           unitCardElem.classList.remove('unit-hidden');
         }
       } else {
-        // Seconds unit card: visible during countdown, hidden when countdown reaches absolute zero
-        if (timeData.isComplete) {
-          unitCardElem.classList.add('unit-hidden');
-        } else {
-          unitCardElem.classList.remove('unit-hidden');
-        }
+        // Seconds unit card: always visible so clock is never an empty row
+        unitCardElem.classList.remove('unit-hidden');
       }
 
       const flipClockUnit = unitCardElem.querySelector('.flip-clock-unit');
@@ -83,12 +79,14 @@ export class FlipClockManager {
 
       // Determine single-digit morph mode:
       // For years, months, days, hours, minutes: single-digit mode whenever val < 10
-      // For seconds: single-digit mode ONLY during the final 9 seconds of the overall countdown (isFinalSeconds && val <= 9)
+      // For seconds: single-digit mode during final countdown (isFinalSeconds && val <= 9)
+      // and whenever the countdown has ended/completed (timeData.isComplete / isPast),
+      // ensuring it displays a single '0' instead of splitting into two zeros ('00').
       let isSingleDigit = false;
       if (unit !== 'seconds') {
         isSingleDigit = (val < 10);
       } else {
-        isSingleDigit = (isFinalSeconds && val <= 9 && val > 0);
+        isSingleDigit = (isFinalSeconds && val <= 9) || timeData.isComplete || timeData.isPast;
       }
 
       // Ensure 2 card elements exist (leftCard and rightCard) inside flipClockUnit

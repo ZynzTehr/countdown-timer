@@ -87,6 +87,45 @@ body {
     }
   }
 
+  .mode-toggle-group {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 2px;
+    gap: 2px;
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.65);
+      font-family: $font-family-display;
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.32rem 0.75rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+
+      &:hover {
+        color: #ffffff;
+      }
+
+      &.active {
+        background: linear-gradient(135deg, rgba(236, 72, 153, 0.6) 0%, rgba(249, 115, 22, 0.6) 100%);
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+      }
+    }
+  }
+
+  .stopwatch-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
   .floating-actions {
     display: flex;
     align-items: center;

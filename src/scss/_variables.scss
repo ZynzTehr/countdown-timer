@@ -17,13 +17,57 @@ $color-orange-coral: #ff5722;
 $color-gold-accent: #fbbf24;
 
 // Default Glassmorphism & UI Colors (overridden dynamically by active day-cycle phase)
+// CSS Houdini Typed Properties for silky smooth gradient transitions across all phases
+@property --theme-digit-c1 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --theme-digit-c2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #fde68a;
+}
+@property --theme-digit-c3 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f59e0b;
+}
+@property --theme-card-top-c1 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #37284a;
+}
+@property --theme-card-top-c2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #251836;
+}
+@property --theme-card-bot-c1 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #1c112a;
+}
+@property --theme-card-bot-c2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #11091b;
+}
+
 :root {
+  --theme-digit-c1: #ffffff;
+  --theme-digit-c2: #fde68a;
+  --theme-digit-c3: #f59e0b;
+  --theme-card-top-c1: #37284a;
+  --theme-card-top-c2: #251836;
+  --theme-card-bot-c1: #1c112a;
+  --theme-card-bot-c2: #11091b;
   --theme-glass-bg: rgba(22, 9, 36, 0.35);
   --theme-glass-border: rgba(255, 255, 255, 0.14);
   --theme-glass-glow: rgba(236, 72, 153, 0.4);
-  --theme-card-top-bg: linear-gradient(180deg, #2b0e4a 0%, #1c0836 100%);
-  --theme-card-bot-bg: linear-gradient(180deg, #17052e 0%, #0e021f 100%);
-  --theme-digit-gradient: linear-gradient(135deg, #ffffff 10%, #f472b6 60%, #ff7a00 100%);
+  --theme-card-top-bg: linear-gradient(180deg, var(--theme-card-top-c1) 0%, var(--theme-card-top-c2) 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, var(--theme-card-bot-c1) 0%, var(--theme-card-bot-c2) 100%);
+  --theme-digit-gradient: linear-gradient(135deg, var(--theme-digit-c1) 10%, var(--theme-digit-c2) 60%, var(--theme-digit-c3) 100%);
   --theme-border-gradient: linear-gradient(135deg, rgba(236, 72, 153, 0.5), rgba(249, 115, 22, 0.5), rgba(126, 34, 206, 0.2));
   --theme-label-gradient: linear-gradient(90deg, #ec4899 0%, #ff7a00 100%);
   --theme-shadow-glow: 0 0 30px rgba(236, 72, 153, 0.3), 0 0 60px rgba(249, 115, 22, 0.15);
@@ -32,12 +76,19 @@ $color-gold-accent: #fbbf24;
 
 // Phase-specific complementary color palettes
 body.phase-dawn {
+  --theme-digit-c1: #ffffff;
+  --theme-digit-c2: #fca5a5;
+  --theme-digit-c3: #f97316;
+  --theme-card-top-c1: #3f1935;
+  --theme-card-top-c2: #2b0d23;
+  --theme-card-bot-c1: #22081b;
+  --theme-card-bot-c2: #150410;
   --theme-glass-bg: rgba(45, 18, 38, 0.38);
   --theme-glass-border: rgba(254, 205, 211, 0.22);
   --theme-glass-glow: rgba(251, 146, 60, 0.45);
-  --theme-card-top-bg: linear-gradient(180deg, #3f1935 0%, #2b0d23 100%);
-  --theme-card-bot-bg: linear-gradient(180deg, #22081b 0%, #150410 100%);
-  --theme-digit-gradient: linear-gradient(135deg, #ffffff 15%, #fca5a5 50%, #f97316 100%);
+  --theme-card-top-bg: linear-gradient(180deg, var(--theme-card-top-c1) 0%, var(--theme-card-top-c2) 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, var(--theme-card-bot-c1) 0%, var(--theme-card-bot-c2) 100%);
+  --theme-digit-gradient: linear-gradient(135deg, var(--theme-digit-c1) 15%, var(--theme-digit-c2) 50%, var(--theme-digit-c3) 100%);
   --theme-border-gradient: linear-gradient(135deg, rgba(251, 146, 60, 0.6), rgba(244, 114, 182, 0.5), rgba(190, 24, 93, 0.3));
   --theme-label-gradient: linear-gradient(90deg, #fb923c 0%, #f472b6 100%);
   --theme-shadow-glow: 0 0 35px rgba(251, 146, 60, 0.35), 0 0 60px rgba(244, 114, 182, 0.2);
@@ -45,12 +96,19 @@ body.phase-dawn {
 }
 
 body.phase-day {
+  --theme-digit-c1: #ffffff;
+  --theme-digit-c2: #fde68a;
+  --theme-digit-c3: #f59e0b;
+  --theme-card-top-c1: #37284a;
+  --theme-card-top-c2: #251836;
+  --theme-card-bot-c1: #1c112a;
+  --theme-card-bot-c2: #11091b;
   --theme-glass-bg: rgba(36, 26, 48, 0.36);
   --theme-glass-border: rgba(253, 230, 138, 0.25);
   --theme-glass-glow: rgba(245, 158, 11, 0.45);
-  --theme-card-top-bg: linear-gradient(180deg, #37284a 0%, #251836 100%);
-  --theme-card-bot-bg: linear-gradient(180deg, #1c112a 0%, #11091b 100%);
-  --theme-digit-gradient: linear-gradient(135deg, #ffffff 15%, #fde68a 50%, #f59e0b 100%);
+  --theme-card-top-bg: linear-gradient(180deg, var(--theme-card-top-c1) 0%, var(--theme-card-top-c2) 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, var(--theme-card-bot-c1) 0%, var(--theme-card-bot-c2) 100%);
+  --theme-digit-gradient: linear-gradient(135deg, var(--theme-digit-c1) 15%, var(--theme-digit-c2) 50%, var(--theme-digit-c3) 100%);
   --theme-border-gradient: linear-gradient(135deg, rgba(245, 158, 11, 0.6), rgba(236, 72, 153, 0.4), rgba(168, 85, 247, 0.3));
   --theme-label-gradient: linear-gradient(90deg, #f59e0b 0%, #ec4899 100%);
   --theme-shadow-glow: 0 0 35px rgba(245, 158, 11, 0.35), 0 0 60px rgba(236, 72, 153, 0.15);
@@ -58,12 +116,19 @@ body.phase-day {
 }
 
 body.phase-dusk {
+  --theme-digit-c1: #ffffff;
+  --theme-digit-c2: #fb7185;
+  --theme-digit-c3: #ea580c;
+  --theme-card-top-c1: #421427;
+  --theme-card-top-c2: #2d0b19;
+  --theme-card-bot-c1: #220612;
+  --theme-card-bot-c2: #14020a;
   --theme-glass-bg: rgba(46, 17, 30, 0.40);
   --theme-glass-border: rgba(254, 215, 170, 0.22);
   --theme-glass-glow: rgba(234, 88, 12, 0.5);
-  --theme-card-top-bg: linear-gradient(180deg, #421427 0%, #2d0b19 100%);
-  --theme-card-bot-bg: linear-gradient(180deg, #220612 0%, #14020a 100%);
-  --theme-digit-gradient: linear-gradient(135deg, #ffffff 10%, #fb7185 45%, #ea580c 100%);
+  --theme-card-top-bg: linear-gradient(180deg, var(--theme-card-top-c1) 0%, var(--theme-card-top-c2) 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, var(--theme-card-bot-c1) 0%, var(--theme-card-bot-c2) 100%);
+  --theme-digit-gradient: linear-gradient(135deg, var(--theme-digit-c1) 10%, var(--theme-digit-c2) 45%, var(--theme-digit-c3) 100%);
   --theme-border-gradient: linear-gradient(135deg, rgba(234, 88, 12, 0.65), rgba(244, 63, 94, 0.55), rgba(124, 45, 18, 0.3));
   --theme-label-gradient: linear-gradient(90deg, #ea580c 0%, #fb7185 100%);
   --theme-shadow-glow: 0 0 35px rgba(234, 88, 12, 0.4), 0 0 60px rgba(244, 63, 94, 0.2);
@@ -71,12 +136,19 @@ body.phase-dusk {
 }
 
 body.phase-night {
+  --theme-digit-c1: #ffffff;
+  --theme-digit-c2: #d946ef;
+  --theme-digit-c3: #818cf8;
+  --theme-card-top-c1: #220a3d;
+  --theme-card-top-c2: #140428;
+  --theme-card-bot-c1: #100222;
+  --theme-card-bot-c2: #080112;
   --theme-glass-bg: rgba(18, 8, 32, 0.42);
   --theme-glass-border: rgba(196, 181, 253, 0.20);
   --theme-glass-glow: rgba(168, 85, 247, 0.5);
-  --theme-card-top-bg: linear-gradient(180deg, #220a3d 0%, #140428 100%);
-  --theme-card-bot-bg: linear-gradient(180deg, #100222 0%, #080112 100%);
-  --theme-digit-gradient: linear-gradient(135deg, #ffffff 15%, #d946ef 55%, #818cf8 100%);
+  --theme-card-top-bg: linear-gradient(180deg, var(--theme-card-top-c1) 0%, var(--theme-card-top-c2) 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, var(--theme-card-bot-c1) 0%, var(--theme-card-bot-c2) 100%);
+  --theme-digit-gradient: linear-gradient(135deg, var(--theme-digit-c1) 15%, var(--theme-digit-c2) 55%, var(--theme-digit-c3) 100%);
   --theme-border-gradient: linear-gradient(135deg, rgba(168, 85, 247, 0.6), rgba(217, 70, 239, 0.5), rgba(99, 102, 241, 0.3));
   --theme-label-gradient: linear-gradient(90deg, #d946ef 0%, #818cf8 100%);
   --theme-shadow-glow: 0 0 35px rgba(168, 85, 247, 0.35), 0 0 65px rgba(217, 70, 239, 0.2);

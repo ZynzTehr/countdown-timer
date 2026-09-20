@@ -27,3 +27,7 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Project docs
+strategy.md
+*strategy*.md

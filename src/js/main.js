@@ -3,12 +3,15 @@
  */
 
 import confetti from 'canvas-confetti';
-import { calculateTimeRemaining } from './countdown.js';
+import { calculateTimeRemaining, calculateStopwatchTime } from './countdown.js';
 import { FlipClockManager } from './flipCard.js';
 import { ambientAudio } from './audio.js';
 import { SceneRenderer } from './sceneRenderer.js';
 import { getPresetEvents, formatDateForInput } from './presets.js';
-import { setCycleConfig, setCycleFixedHour } from './dayCycle.js';
+import { setCycleConfig, setCycleFixedHour, setSpeed } from './dayCycle.js';
+
+// Expose speed control for testing: window.setSpeed(60) = 24h in 24s
+window.setSpeed = setSpeed;
 
 class CountdownApp {
   constructor() {
@@ -16,13 +19,17 @@ class CountdownApp {
     this.eventName = 'New Year 2027';
     this.showLeadingZeros = true;
     this.soundEnabled = true;
-    this.currentCycleSpeed = '10';
+    this.currentCycleSpeed = '1';
     this.weatherMode = 'dynamic';
     this.moonMode = 'auto';
     this.seasonMode = 'auto';
     this.timerId = null;
     this.hasCelebrated = false;
     this.hoverTimeout = null;
+    this.timerMode = 'countdown'; // 'countdown' | 'stopwatch'
+    this.stopwatchRunning = false;
+    this.stopwatchElapsedMs = 0;
+    this.stopwatchStartTime = 0;
 
     this.initElements();
     this.initScene();
@@ -67,12 +74,23 @@ class CountdownApp {
     this.inputMoonPhase = document.getElementById('input-moon-phase');
     this.inputSeason = document.getElementById('input-season');
     this.presetContainer = document.getElementById('preset-pills-container');
+
+    // Mode & Stopwatch elements
+    this.btnModeCountdown = document.getElementById('btn-mode-countdown');
+    this.btnModeStopwatch = document.getElementById('btn-mode-stopwatch');
+    this.stopwatchActions = document.getElementById('stopwatch-actions');
+    this.btnStopwatchToggle = document.getElementById('btn-stopwatch-toggle');
+    this.btnStopwatchReset = document.getElementById('btn-stopwatch-reset');
+    this.iconStopwatchPlay = document.getElementById('icon-stopwatch-play');
+    this.iconStopwatchPause = document.getElementById('icon-stopwatch-pause');
+    this.textStopwatchToggle = document.getElementById('text-stopwatch-toggle');
   }
 
   initScene() {
     const canvasElem = document.getElementById('scene-canvas');
     if (canvasElem) {
       this.sceneRenderer = new SceneRenderer(canvasElem);
+      window.sceneRenderer = this.sceneRenderer;
     }
   }
 
@@ -130,7 +148,7 @@ class CountdownApp {
     const savedDate = localStorage.getItem('countdown_target_date');
     const savedZeros = localStorage.getItem('countdown_leading_zeros');
     const savedSound = localStorage.getItem('countdown_sound_enabled');
-    const savedCycle = localStorage.getItem('countdown_cycle_speed') || '10';
+    const savedCycle = localStorage.getItem('countdown_cycle_speed') || '1';
     const savedWeather = localStorage.getItem('countdown_weather_mode') || 'dynamic';
     const savedMoon = localStorage.getItem('countdown_moon_mode') || 'auto';
     const savedSeason = localStorage.getItem('countdown_season_mode') || 'auto';
@@ -187,7 +205,7 @@ class CountdownApp {
     if (speed === 'realtime') {
       setCycleConfig('realtime');
     } else {
-      const mins = parseFloat(speed) || 10;
+      const mins = parseFloat(speed) || 1;
       setCycleConfig('loop', mins);
     }
   }
@@ -483,6 +501,20 @@ class CountdownApp {
       this.updateSoundIcon();
       localStorage.setItem('countdown_sound_enabled', this.soundEnabled);
     });
+
+    // Mode toggle & Stopwatch button bindings
+    if (this.btnModeCountdown) {
+      this.btnModeCountdown.addEventListener('click', () => this.setTimerMode('countdown'));
+    }
+    if (this.btnModeStopwatch) {
+      this.btnModeStopwatch.addEventListener('click', () => this.setTimerMode('stopwatch'));
+    }
+    if (this.btnStopwatchToggle) {
+      this.btnStopwatchToggle.addEventListener('click', () => this.toggleStopwatch());
+    }
+    if (this.btnStopwatchReset) {
+      this.btnStopwatchReset.addEventListener('click', () => this.resetStopwatch());
+    }
   }
 
   updateHeaderUI() {
@@ -509,6 +541,19 @@ class CountdownApp {
   }
 
   tick() {
+    if (this.timerMode === 'stopwatch') {
+      let elapsed = this.stopwatchElapsedMs;
+      if (this.stopwatchRunning) {
+        elapsed = Date.now() - this.stopwatchStartTime;
+      }
+      const timeData = calculateStopwatchTime(elapsed);
+      this.clockManager.setOptions({
+        showLeadingZeros: this.showLeadingZeros
+      });
+      this.clockManager.update(timeData);
+      return;
+    }
+
     if (!this.targetDate) return;
 
     const timeData = calculateTimeRemaining(this.targetDate);
@@ -522,7 +567,7 @@ class CountdownApp {
     if (timeData.isComplete) {
       this.targetStatusElem.textContent = `EVENT COMPLETED:`;
       if (this.completionBanner) {
-        this.completionTitle.textContent = `${this.eventName} IS HERE!`;
+        this.completionTitle.textContent = `${this.eventName} REACHED!`;
         this.completionSubtitle.textContent = `The countdown reached absolute zero. Celebration time!`;
         this.completionBanner.style.display = 'flex';
       }
@@ -531,16 +576,66 @@ class CountdownApp {
         this.triggerConfetti();
         this.hasCelebrated = true;
       }
-    } else if (timeData.isPast) {
-      this.targetStatusElem.textContent = `TIME SINCE EVENT:`;
-      if (this.completionBanner) {
-        this.completionBanner.style.display = 'none';
-      }
     } else {
       this.targetStatusElem.textContent = `COUNTING DOWN TO:`;
       if (this.completionBanner) {
         this.completionBanner.style.display = 'none';
       }
+    }
+  }
+
+  setTimerMode(mode) {
+    this.timerMode = mode;
+    if (mode === 'stopwatch') {
+      if (this.btnModeCountdown) this.btnModeCountdown.classList.remove('active');
+      if (this.btnModeStopwatch) this.btnModeStopwatch.classList.add('active');
+      if (this.stopwatchActions) this.stopwatchActions.style.display = 'flex';
+      if (this.btnOpenSettings) this.btnOpenSettings.style.display = 'none';
+      if (this.targetStatusElem) this.targetStatusElem.textContent = 'STOPWATCH:';
+      if (this.targetEventNameElem) this.targetEventNameElem.textContent = 'Task Timer';
+      if (this.completionBanner) this.completionBanner.style.display = 'none';
+      this.updateStopwatchButtons();
+    } else {
+      if (this.btnModeStopwatch) this.btnModeStopwatch.classList.remove('active');
+      if (this.btnModeCountdown) this.btnModeCountdown.classList.add('active');
+      if (this.stopwatchActions) this.stopwatchActions.style.display = 'none';
+      if (this.btnOpenSettings) this.btnOpenSettings.style.display = 'inline-flex';
+      if (this.targetEventNameElem) this.targetEventNameElem.textContent = this.eventName;
+      this.targetStatusElem.textContent = 'COUNTING DOWN TO:';
+    }
+    this.tick();
+  }
+
+  toggleStopwatch() {
+    if (this.stopwatchRunning) {
+      this.stopwatchElapsedMs = Date.now() - this.stopwatchStartTime;
+      this.stopwatchRunning = false;
+    } else {
+      this.stopwatchStartTime = Date.now() - this.stopwatchElapsedMs;
+      this.stopwatchRunning = true;
+    }
+    this.updateStopwatchButtons();
+    this.tick();
+  }
+
+  resetStopwatch() {
+    this.stopwatchRunning = false;
+    this.stopwatchElapsedMs = 0;
+    this.stopwatchStartTime = 0;
+    this.updateStopwatchButtons();
+    this.tick();
+  }
+
+  updateStopwatchButtons() {
+    if (!this.textStopwatchToggle) return;
+    if (this.stopwatchRunning) {
+      this.textStopwatchToggle.textContent = 'Pause';
+      if (this.iconStopwatchPlay) this.iconStopwatchPlay.style.display = 'none';
+      if (this.iconStopwatchPause) this.iconStopwatchPause.style.display = 'inline';
+    } else {
+      this.textStopwatchToggle.textContent = (this.stopwatchElapsedMs > 0) ? 'Resume' : 'Start';
+      if (this.iconStopwatchPlay) this.iconStopwatchPlay.style.display = 'inline';
+      if (this.iconStopwatchPause) this.iconStopwatchPause.style.display = 'none';
     }
   }
 
@@ -563,8 +658,12 @@ class CountdownApp {
   }
 }
 
-// URL Query Parameter testing support (?hour=6.2, ?phase=dawn)
+// URL Query Parameter testing support (?hour=6.2, ?phase=dawn, ?speed=60)
 const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has('speed')) {
+  const spd = parseFloat(urlParams.get('speed'));
+  if (spd > 0) setSpeed(spd);
+}
 if (urlParams.has('hour')) {
   const h = parseFloat(urlParams.get('hour'));
   setCycleFixedHour(h);

@@ -28,6 +28,22 @@
         <span class="chip-event-name" id="target-event-name">New Year 2027</span>
       </div>
 
+      <div class="mode-toggle-group" id="mode-toggle-group" role="tablist">
+        <button type="button" id="btn-mode-countdown" class="mode-btn active" title="Countdown to an event">Countdown</button>
+        <button type="button" id="btn-mode-stopwatch" class="mode-btn" title="Stopwatch task timer">Stopwatch</button>
+      </div>
+
+      <div class="stopwatch-actions" id="stopwatch-actions" style="display: none;">
+        <button type="button" id="btn-stopwatch-toggle" class="btn-glow btn-float" title="Start / Pause Stopwatch">
+          <svg id="icon-stopwatch-play" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg id="icon-stopwatch-pause" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          <span id="text-stopwatch-toggle">Start</span>
+        </button>
+        <button type="button" id="btn-stopwatch-reset" class="btn-glow btn-float btn-icon-only" title="Reset Stopwatch to Zero">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><polyline points="3 3 3 8 8 8"/></svg>
+        </button>
+      </div>
+
       <div class="floating-actions">
         <button id="btn-open-settings" class="btn-glow btn-float" title="Set Target Date & Time">
           <svg viewBox="0 0 24 24">
@@ -170,13 +186,13 @@
               <label>Day Cycle Speed</label>
               <span class="label-hint">Lighting and atmosphere progression pace</span>
             </div>
-            <div class="choice-cards-grid grid-4" data-sync="input-cycle-speed">
-              <button type="button" class="choice-card" data-val="10">
+            <div class="choice-cards-grid grid-5" data-sync="input-cycle-speed">
+              <button type="button" class="choice-card active" data-val="1">
                 <div class="card-icon-wrap">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
                 </div>
-                <span class="card-title">10 Min Loop</span>
-                <span class="card-desc">Smooth day & night flow</span>
+                <span class="card-title">1 Min Test</span>
+                <span class="card-desc">Rapid 60s testing loop</span>
               </button>
               <button type="button" class="choice-card" data-val="5">
                 <div class="card-icon-wrap">
@@ -184,6 +200,13 @@
                 </div>
                 <span class="card-title">5 Min Fast</span>
                 <span class="card-desc">Rapid atmospheric cycle</span>
+              </button>
+              <button type="button" class="choice-card" data-val="10">
+                <div class="card-icon-wrap">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+                </div>
+                <span class="card-title">10 Min Loop</span>
+                <span class="card-desc">Smooth day & night flow</span>
               </button>
               <button type="button" class="choice-card" data-val="20">
                 <div class="card-icon-wrap">
@@ -201,8 +224,9 @@
               </button>
             </div>
             <select id="input-cycle-speed" class="hidden-sync-select">
-              <option value="10">10 Minutes (Continuous Day/Night Flow)</option>
+              <option value="1" selected>1 Minute (Rapid 60s Testing Loop)</option>
               <option value="5">5 Minutes (Fast Ambient Flow)</option>
+              <option value="10">10 Minutes (Continuous Day/Night Flow)</option>
               <option value="20">20 Minutes (Gentle Ambient)</option>
               <option value="realtime">Real-Time Clock Sync (Local Time of Day)</option>
             </select>

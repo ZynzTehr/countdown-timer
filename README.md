@@ -90,10 +90,7 @@ countdown-timer/
 ├── .github/workflows/
 │   └── deploy.yml              # CI/CD: npm ci → build → deploy to GitHub Pages
 ├── public/images/
-│   ├── wallpaper-dawn.jpg      # Hand-painted dawn landscape
-│   ├── wallpaper-day.jpg       # Hand-painted daytime landscape
-│   ├── wallpaper-dusk.jpg      # Hand-painted sunset landscape
-│   ├── wallpaper-night.jpg     # Hand-painted night landscape
+│   ├── wallpaper-base.jpg      # Hand-painted landscape base artwork (dynamic lighting & grading)
 │   └── header.svg              # Animated README banner
 ├── src/
 │   ├── js/

@@ -77,15 +77,15 @@ export function rgbStr(color, alpha = 1) {
     : `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 }
 
-// Day Cycle Configuration — Default to Option B (Compressed Loop)
+// Day Cycle Configuration — Default to 1-minute loop for fast iteration
 let cycleMode = 'loop'; // 'loop' (Option B), 'realtime' (Option A), or 'fixed'
-let cycleDurationMs = 10 * 60 * 1000; // 10 minutes per full 24-hour cycle
+let cycleDurationMs = 1 * 60 * 1000; // 1 minute per full 24-hour cycle for fast testing
 let fixedHour = null;
 
-export function setCycleConfig(mode = 'loop', durationMinutes = 10) {
+export function setCycleConfig(mode = 'loop', durationMinutes = 1) {
   cycleMode = mode;
   fixedHour = null;
-  cycleDurationMs = Math.max(1, durationMinutes) * 60 * 1000;
+  cycleDurationMs = Math.max(0.2, durationMinutes) * 60 * 1000;
 }
 
 export function setCycleFixedHour(hour) {
@@ -108,6 +108,18 @@ export function getCycleConfig() {
     durationMinutes: cycleDurationMs / (60 * 1000),
     fixedHour
   };
+}
+
+/**
+ * Speed multiplier for testing. setSpeed(60) runs 24h in 1 second.
+ * setSpeed(1) returns to default 1-minute loop.
+ */
+export function setSpeed(multiplier = 1) {
+  const baseDurationMs = 1 * 60 * 1000; // 1 minute default
+  cycleDurationMs = Math.max(500, baseDurationMs / multiplier);
+  cycleMode = 'loop';
+  fixedHour = null;
+  console.log(`Day cycle speed: ${multiplier}x (full cycle in ${(cycleDurationMs / 1000).toFixed(1)}s)`);
 }
 
 /**

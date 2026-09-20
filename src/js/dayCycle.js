@@ -78,7 +78,7 @@ export function rgbStr(color, alpha = 1) {
 }
 
 // Day Cycle Configuration — Default to 1-minute loop for fast iteration
-let cycleMode = 'loop'; // 'loop' (Option B), 'realtime' (Option A), or 'fixed'
+let cycleMode = 'loop'; // 'loop', 'realtime', or 'fixed'
 let cycleDurationMs = 1 * 60 * 1000; // 1 minute per full 24-hour cycle for fast testing
 let fixedHour = null;
 

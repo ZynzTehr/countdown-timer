@@ -16,26 +16,85 @@ $color-orange-coral: #ff5722;
 
 $color-gold-accent: #fbbf24;
 
-// Glassmorphism & UI Colors
-$glass-bg: rgba(26, 12, 45, 0.45);
-$glass-bg-hover: rgba(45, 20, 75, 0.6);
-$glass-border: rgba(255, 255, 255, 0.15);
-$glass-border-glow: rgba(236, 72, 153, 0.4);
+// Default Glassmorphism & UI Colors (overridden dynamically by active day-cycle phase)
+:root {
+  --theme-glass-bg: rgba(22, 9, 36, 0.35);
+  --theme-glass-border: rgba(255, 255, 255, 0.14);
+  --theme-glass-glow: rgba(236, 72, 153, 0.4);
+  --theme-card-top-bg: linear-gradient(180deg, #2b0e4a 0%, #1c0836 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, #17052e 0%, #0e021f 100%);
+  --theme-digit-gradient: linear-gradient(135deg, #ffffff 10%, #f472b6 60%, #ff7a00 100%);
+  --theme-border-gradient: linear-gradient(135deg, rgba(236, 72, 153, 0.5), rgba(249, 115, 22, 0.5), rgba(126, 34, 206, 0.2));
+  --theme-label-gradient: linear-gradient(90deg, #ec4899 0%, #ff7a00 100%);
+  --theme-shadow-glow: 0 0 30px rgba(236, 72, 153, 0.3), 0 0 60px rgba(249, 115, 22, 0.15);
+  --theme-shadow-card: 0 15px 35px rgba(0, 0, 0, 0.55), 0 5px 15px rgba(126, 34, 206, 0.25);
+}
+
+// Phase-specific complementary color palettes
+body.phase-dawn {
+  --theme-glass-bg: rgba(45, 18, 38, 0.38);
+  --theme-glass-border: rgba(254, 205, 211, 0.22);
+  --theme-glass-glow: rgba(251, 146, 60, 0.45);
+  --theme-card-top-bg: linear-gradient(180deg, #3f1935 0%, #2b0d23 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, #22081b 0%, #150410 100%);
+  --theme-digit-gradient: linear-gradient(135deg, #ffffff 15%, #fca5a5 50%, #f97316 100%);
+  --theme-border-gradient: linear-gradient(135deg, rgba(251, 146, 60, 0.6), rgba(244, 114, 182, 0.5), rgba(190, 24, 93, 0.3));
+  --theme-label-gradient: linear-gradient(90deg, #fb923c 0%, #f472b6 100%);
+  --theme-shadow-glow: 0 0 35px rgba(251, 146, 60, 0.35), 0 0 60px rgba(244, 114, 182, 0.2);
+  --theme-shadow-card: 0 15px 35px rgba(20, 5, 15, 0.6), 0 5px 15px rgba(251, 146, 60, 0.25);
+}
+
+body.phase-day {
+  --theme-glass-bg: rgba(36, 26, 48, 0.36);
+  --theme-glass-border: rgba(253, 230, 138, 0.25);
+  --theme-glass-glow: rgba(245, 158, 11, 0.45);
+  --theme-card-top-bg: linear-gradient(180deg, #37284a 0%, #251836 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, #1c112a 0%, #11091b 100%);
+  --theme-digit-gradient: linear-gradient(135deg, #ffffff 15%, #fde68a 50%, #f59e0b 100%);
+  --theme-border-gradient: linear-gradient(135deg, rgba(245, 158, 11, 0.6), rgba(236, 72, 153, 0.4), rgba(168, 85, 247, 0.3));
+  --theme-label-gradient: linear-gradient(90deg, #f59e0b 0%, #ec4899 100%);
+  --theme-shadow-glow: 0 0 35px rgba(245, 158, 11, 0.35), 0 0 60px rgba(236, 72, 153, 0.15);
+  --theme-shadow-card: 0 15px 35px rgba(10, 5, 20, 0.55), 0 5px 15px rgba(245, 158, 11, 0.2);
+}
+
+body.phase-dusk {
+  --theme-glass-bg: rgba(46, 17, 30, 0.40);
+  --theme-glass-border: rgba(254, 215, 170, 0.22);
+  --theme-glass-glow: rgba(234, 88, 12, 0.5);
+  --theme-card-top-bg: linear-gradient(180deg, #421427 0%, #2d0b19 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, #220612 0%, #14020a 100%);
+  --theme-digit-gradient: linear-gradient(135deg, #ffffff 10%, #fb7185 45%, #ea580c 100%);
+  --theme-border-gradient: linear-gradient(135deg, rgba(234, 88, 12, 0.65), rgba(244, 63, 94, 0.55), rgba(124, 45, 18, 0.3));
+  --theme-label-gradient: linear-gradient(90deg, #ea580c 0%, #fb7185 100%);
+  --theme-shadow-glow: 0 0 35px rgba(234, 88, 12, 0.4), 0 0 60px rgba(244, 63, 94, 0.2);
+  --theme-shadow-card: 0 15px 35px rgba(20, 5, 10, 0.6), 0 5px 15px rgba(234, 88, 12, 0.25);
+}
+
+body.phase-night {
+  --theme-glass-bg: rgba(18, 8, 32, 0.42);
+  --theme-glass-border: rgba(196, 181, 253, 0.20);
+  --theme-glass-glow: rgba(168, 85, 247, 0.5);
+  --theme-card-top-bg: linear-gradient(180deg, #220a3d 0%, #140428 100%);
+  --theme-card-bot-bg: linear-gradient(180deg, #100222 0%, #080112 100%);
+  --theme-digit-gradient: linear-gradient(135deg, #ffffff 15%, #d946ef 55%, #818cf8 100%);
+  --theme-border-gradient: linear-gradient(135deg, rgba(168, 85, 247, 0.6), rgba(217, 70, 239, 0.5), rgba(99, 102, 241, 0.3));
+  --theme-label-gradient: linear-gradient(90deg, #d946ef 0%, #818cf8 100%);
+  --theme-shadow-glow: 0 0 35px rgba(168, 85, 247, 0.35), 0 0 65px rgba(217, 70, 239, 0.2);
+  --theme-shadow-card: 0 15px 35px rgba(0, 0, 0, 0.65), 0 5px 15px rgba(168, 85, 247, 0.3);
+}
+
+$glass-bg: var(--theme-glass-bg);
+$glass-border: var(--theme-glass-border);
+$glass-border-glow: var(--theme-glass-glow);
 
 $color-text-main: #ffffff;
 $color-text-muted: rgba(255, 255, 255, 0.7);
 $color-text-dim: rgba(255, 255, 255, 0.45);
-
-// Flip Card Specific Colors
-$card-bg-top: #1b0a33;
-$card-bg-bottom: #140728;
-$card-divider: rgba(0, 0, 0, 0.6);
-$card-text-gradient: linear-gradient(135deg, #ffffff 0%, #f472b6 50%, #f97316 100%);
 
 // Fonts
 $font-family-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
 $font-family-digits: 'Space Grotesk', 'JetBrains Mono', monospace;
 
 // Transitions & Shadows
-$shadow-glow: 0 0 25px rgba(236, 72, 153, 0.3), 0 0 50px rgba(249, 115, 22, 0.15);
-$shadow-card: 0 15px 35px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(126, 34, 206, 0.2);
+$shadow-glow: var(--theme-shadow-glow);
+$shadow-card: var(--theme-shadow-card);

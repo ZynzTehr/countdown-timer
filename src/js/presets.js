@@ -21,7 +21,13 @@ export function getPresetEvents() {
   // 100 Days Countdown
   const hundredDays = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 100);
 
+  // Quick Timers
+  const fifteenMinutes = new Date(now.getTime() + 15 * 60 * 1000);
+  const thirtyMinutes = new Date(now.getTime() + 30 * 60 * 1000);
+
   return [
+    { id: '15min', name: '15 Minutes', date: fifteenMinutes },
+    { id: '30min', name: '30 Minutes', date: thirtyMinutes },
     { id: 'new-year', name: `New Year ${currentYear + 1}`, date: nextNewYear },
     { id: 'solstice', name: 'Summer Solstice', date: summerSolstice },
     { id: 'cosmic', name: 'Cosmic Convergence', date: cosmicEvent },

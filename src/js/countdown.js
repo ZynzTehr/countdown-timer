@@ -4,8 +4,13 @@
  */
 
 export function calculateTimeRemaining(targetDate, currentDate = new Date()) {
-  const target = new Date(targetDate);
+  let target = new Date(targetDate);
   const now = new Date(currentDate);
+
+  if (!targetDate || isNaN(target.getTime())) {
+    // Safe fallback: Next New Year
+    target = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0);
+  }
 
   const totalMs = target.getTime() - now.getTime();
   const isPast = totalMs < 0;
@@ -47,14 +52,14 @@ export function calculateTimeRemaining(targetDate, currentDate = new Date()) {
   const isZero = (years === 0 && months === 0 && days === 0 && hours === 0 && minutes === 0 && seconds === 0);
 
   return {
-    years: Math.max(0, years),
-    months: Math.max(0, months),
-    days: Math.max(0, days),
-    hours: Math.max(0, hours),
-    minutes: Math.max(0, minutes),
-    seconds: Math.max(0, seconds),
-    isPast,
+    years: Math.max(0, isNaN(years) ? 0 : years),
+    months: Math.max(0, isNaN(months) ? 0 : months),
+    days: Math.max(0, isNaN(days) ? 0 : days),
+    hours: Math.max(0, isNaN(hours) ? 0 : hours),
+    minutes: Math.max(0, isNaN(minutes) ? 0 : minutes),
+    seconds: Math.max(0, isNaN(seconds) ? 0 : seconds),
+    isPast: !!isPast,
     isComplete: isComplete || (isZero && !isPast),
-    totalMs: Math.abs(totalMs)
+    totalMs: isNaN(totalMs) ? 0 : Math.abs(totalMs)
   };
 }

@@ -7,26 +7,13 @@ body {
   padding: 0;
   min-height: 100vh;
   background-color: $color-bg-dark;
-  background-image: url('/images/background.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
   color: $color-text-main;
   font-family: $font-family-display;
   overflow-x: hidden;
   position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 30%, rgba(30, 11, 54, 0.4) 0%, rgba(15, 5, 29, 0.85) 100%);
-    pointer-events: none;
-    z-index: 0;
-  }
 }
 
-#particle-canvas {
+#scene-canvas {
   position: fixed;
   top: 0;
   left: 0;
@@ -42,10 +29,69 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 1rem clamp(12rem, 25vh, 20rem) 1rem;
   box-sizing: border-box;
+}
+
+// Hoverable Floating Controls Bar
+.floating-controls {
+  position: fixed;
+  top: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(-28px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.55rem 1.25rem;
+  background: rgba(22, 10, 36, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(236, 72, 153, 0.35);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(236, 72, 153, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.revealed,
+  &:hover,
+  &:focus-within {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  .target-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+
+    .chip-status {
+      color: rgba(255, 255, 255, 0.65);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    .chip-event-name {
+      color: $color-gold-accent;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+  }
+
+  .floating-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 }
 
 // Glass Header Component
